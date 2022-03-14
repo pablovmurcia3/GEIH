@@ -16,12 +16,13 @@ for (i in 1:length(file_listC)) {
   L2021A[[i]] <- read.csv(file_listA[i], sep = ";")
 }
 
+
+
+
 file_list <- list.files(path = "C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/Diciembre")
-names(L2021A) <- grep("Cabecera",file_list, value=TRUE)
+names(L2021A) <- grep("Área",file_list, value=TRUE)
 names(L2021C) <- grep("Cabecera",file_list, value=TRUE)
 names(L2021R) <- grep("Resto",file_list, value=TRUE)
-
-
 
 #
 
