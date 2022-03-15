@@ -1,12 +1,16 @@
 library(stringi)
 
 
-procesamiento <- function(zona) {
+
+
+
+
+procesamiento <- function(zona, mes) {
       
       library(stringi)
       # Paquete necesario para manipular nombres
   
-      file_list <- list.files(path = "C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/Diciembre", full.names = TRUE)
+      file_list <- list.files(path = paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/", mes), full.names = TRUE)
       file_zona <- grep(zona, file_list, value=TRUE)
       # 1) Se crea una lista con todos los archivos
       # 2) se crea una lista con los archivos de la zona seleccioonada en la función
@@ -66,8 +70,12 @@ procesamiento <- function(zona) {
 
 
 #########################################################################
+d <- procesamiento("Área", "Noviembre")
+DATA <- mapply(procesamiento, "Resto", c("Noviembre","Diciembre"))
 
-DATA <- mapply(procesamiento, c("Resto", "Cabecera", "Área"))
+
+DATA <- mapply(procesamiento, c("Resto", "Cabecera"), c("Noviembre","Diciembre"))
+
 
 Resto <- DATA$Resto
 Cabeceras <- DATA$Cabecera
@@ -76,6 +84,23 @@ Area <- DATA$Área
 ##########################################################################
 
 
+names(d) <- tolower(names(d)) 
+names(cabecera2021m11)
 
+
+names(d) %in% names(resto2021m11)
+length(names(cabecera2021m11) %in% names(d))
+table(names(area2021m11) %in% names(d))
+table(names(d) %in% names(area2021m11))
+
+sum(area2021m11$hogar)
+sum(d$HOGAR)
+
+names(resto2021m11)[!names(area2021m11) %in% names(d)]
+
+as.numeric(d$directorio)
+
+library(haven)
+area2021m11 <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/area2021m11.dta")
 
 # pend probar en noviembre 

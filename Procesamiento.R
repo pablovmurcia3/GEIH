@@ -1,6 +1,13 @@
 library(readr)
 
-file_list <- list.files(path = "C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/Diciembre", full.names = TRUE)
+file_list <- list.files(path = paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/", Diciembre), full.names = TRUE)
+
+
+file_list <- list.files(path = "C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/Noviembre", full.names = TRUE)
+
+Diciembre<-"Diciembre"
+print(paste0("Current working dir:", wd))
+
 
 file_listC <- grep("Cabecera",file_list, value=TRUE)
 file_listR <- grep("Resto",file_list, value=TRUE)
@@ -16,9 +23,9 @@ for (i in 1:length(file_listC)) {
   L2021A[[i]] <- read.csv(file_listA[i], sep = ";")
 }
 
-
-
-
+A<-L2021A[[1]]
+class(A$DIRECTORIO)
+class(d$fex_c_2011)
 file_list <- list.files(path = "C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/Diciembre")
 names(L2021A) <- grep("Área",file_list, value=TRUE)
 names(L2021C) <- grep("Cabecera",file_list, value=TRUE)
