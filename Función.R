@@ -1,9 +1,5 @@
-library(stringi)
 
-
-
-
-
+Chequeo("Diciembre")
 
 procesamiento <- function(zona, mes) {
       
@@ -23,7 +19,7 @@ procesamiento <- function(zona, mes) {
       # Estas data frames se meten en otra lista
       
       
-      file_names <- list.files(path = "C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/Diciembre")
+      file_names <- list.files(path = "C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/", mes)
       names(lista) <- grep(zona,file_names, value=TRUE)
       names(lista) <- toupper(stri_trans_general(names(lista),"Latin-ASCII"))
       # 4) Se les da nombres a los elementos de la lista 
