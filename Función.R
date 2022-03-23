@@ -1,7 +1,7 @@
 
 Chequeo("Diciembre")
 
-procesamiento <- function(zona, mes) {
+procesamientoGEIH2005 <- function(zona, mes) {
       
       library(stringi)
       # Paquete necesario para manipular nombres
