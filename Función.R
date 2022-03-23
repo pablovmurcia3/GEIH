@@ -19,7 +19,7 @@ procesamiento <- function(zona, mes) {
       # Estas data frames se meten en otra lista
       
       
-      file_names <- list.files(path = "C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/", mes)
+      file_names <- list.files(path = paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/", mes))
       names(lista) <- grep(zona,file_names, value=TRUE)
       names(lista) <- toupper(stri_trans_general(names(lista),"Latin-ASCII"))
       # 4) Se les da nombres a los elementos de la lista 
@@ -66,18 +66,15 @@ procesamiento <- function(zona, mes) {
 
 
 #########################################################################
-d <- procesamiento("Área", "Noviembre")
-DATA <- mapply(procesamiento, "Resto", c("Noviembre","Diciembre"))
+A <- procesamiento("Área", "Noviembre")
+R <- procesamiento("Resto", "Noviembre")
+C <- procesamiento("Cabecera", "Noviembre")
 
-
-DATA <- mapply(procesamiento, c("Resto", "Cabecera"), c("Noviembre","Diciembre"))
-
-
-Resto <- DATA$Resto
-Cabeceras <- DATA$Cabecera
-Area <- DATA$Área
-
+library(haven)
+resto2021m11 <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/resto2021m11.dta")
 ##########################################################################
+
+
 
 
 names(d) <- tolower(names(d)) 
@@ -97,6 +94,6 @@ names(resto2021m11)[!names(area2021m11) %in% names(d)]
 as.numeric(d$directorio)
 
 library(haven)
-area2021m11 <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/area2021m11.dta")
+resto2021m11 <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/resto2021m11.dta")
 
 # pend probar en noviembre 
