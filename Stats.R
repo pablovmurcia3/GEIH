@@ -6,31 +6,84 @@ arrange(select(chicago, pm25:year), year)
 
 
 
-Ocupacion <- C %>% filter(AREA == 11) %>%  select(OCI, fex_c_2011) %>%  group_by(OCI) %>%
-  summarize(O = sum(fex_c_2011, na.rm = TRUE))
-
-Ocupación2 <- cabecera2021m11 %>% filter(area == 11) %>% select(oci, fex_c_2011) %>% group_by(oci) %>%
-  summarize(O = sum(fex_c_2011, na.rm = TRUE))
-
-
-Desempleo <- C %>% filter(AREA == 11) %>%  select(DSI, fex_c_2011) %>%  group_by(DSI) %>%
-  summarize(O = sum(fex_c_2011, na.rm = TRUE))
-
-Desempleo2 <- cabecera2021m11 %>% filter(area == 11) %>% select(dsi, fex_c_2011) %>% group_by(dsi) %>%
-  summarize(O = sum(fex_c_2011, na.rm = TRUE))
-
-
-Ocupacion <- A %>% filter(AREA == 11) %>%  select(OCI, fex_c_2011) %>%  group_by(OCI) %>%
-  summarize(O = sum(fex_c_2011, na.rm = TRUE))
-
+A$PET <- ifelse(A$P6040 >= 12,1,0)
+A$PEA <- ifelse(A$OCI == 1 | A$DSI ==1 ,1,0)
 
 
 ## Ocupación 
 
 
-#Bogotá
-A$OCI = as.character(A$OCI)
-D <- A[A$AREA == 11,]
-D <- D[complete.cases(D$OCI),]
-sum(D$fex_c_2011)
+# Bogotá
 
+
+PET <- sum(A[A$PET ==1 & A$AREA == 11 ,]$fex_c_2011)
+Ocupados <- sum(A[A$AREA == 11 & complete.cases(A$OCI),]$fex_c_2011)
+TO <- Ocupados/PET*100
+
+
+# 13 áreas 
+
+PET <- sum(A[A$PET ==1,]$fex_c_2011)
+Ocupados <- sum(A[complete.cases(A$OCI),]$fex_c_2011)
+TO <- Ocupados/PET*100
+
+a<- complete.cases(A$OCI)
+
+bz- A$OCI==1
+
+## Desenpleo 
+
+# Bogotá
+PEA <- sum(A[complete.cases(A$PEA) & A$AREA == 11 ,]$fex_c_2011)
+Desempleados <- sum(A[A$AREA == 11 & complete.cases(A$DSI),]$fex_c_2011)
+TD <- Desempleados/PEA*100
+
+
+# 13 áreas 
+PEA <- sum(A[complete.cases(A$PEA),]$fex_c_2011)
+Desempleados <- sum(A[complete.cases(A$DSI),]$fex_c_2011)
+TD <- Desempleados/PEA*100
+
+
+## por sexo - Desempleo 
+
+# Bogotá
+PEA <- sum(A[complete.cases(A$PEA) & A$AREA == 11 & A$P6020 == 1,]$fex_c_2011)
+Desempleados <- sum(A[A$AREA == 11 & complete.cases(A$DSI) & A$P6020 == 1,]$fex_c_2011)
+TDH <- Desempleados/PEA*100
+
+PEA <- sum(A[complete.cases(A$PEA) & A$AREA == 11 & A$P6020 == 2,]$fex_c_2011)
+Desempleados <- sum(A[A$AREA == 11 & complete.cases(A$DSI) & A$P6020 == 2,]$fex_c_2011)
+TDM <- Desempleados/PEA*100
+
+# 13 áreas
+PEA <- sum(A[complete.cases(A$PEA) & A$P6020 == 1,]$fex_c_2011)
+Desempleados <- sum(A[complete.cases(A$DSI) & A$P6020 == 1,]$fex_c_2011)
+TDH <- Desempleados/PEA*100
+
+PEA <- sum(A[complete.cases(A$PEA) & A$P6020 == 2,]$fex_c_2011)
+Desempleados <- sum(A[complete.cases(A$DSI) & A$P6020 == 2,]$fex_c_2011)
+TDM <- Desempleados/PEA*100
+
+
+## por años - Desempleo 
+
+
+A$age <- cut(A$P6040, breaks = c(12,28,39,49, 59, 130))
+
+levels(A$age)
+Aage <- A[complete.cases(A$age),]
+
+
+list <- split(Aage, Aage$age) 
+sapply(list, function(x) {
+  PEA <- sum(x[complete.cases(x$PEA) & x$AREA == 11 ,]$fex_c_2011)
+  Desempleados <- sum(x[x$AREA == 11 & complete.cases(x$DSI),]$fex_c_2011)
+  TD <- Desempleados/PEA*100
+})          
+
+sapply(list, function(x) {
+  PEA <- sum(x[complete.cases(x$PEA) ,]$fex_c_2011)
+  Desempleados <- sum(x[complete.cases(x$DSI),]$fex_c_2011)
+  TD <- Desempleados/PEA*100
+}) 
