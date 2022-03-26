@@ -66,34 +66,13 @@ procesamientoGEIH2005 <- function(zona, mes) {
 
 
 #########################################################################
-A <- procesamiento("Área", "Noviembre")
-R <- procesamiento("Resto", "Noviembre")
-C <- procesamiento("Cabecera", "Noviembre")
+A <- procesamientoGEIH2005("Área", "Noviembre")
+R <- procesamientoGEIH2005("Resto", "Noviembre")
+C <- procesamientoGEIH2005("Cabecera", "Noviembre")
 
 library(haven)
 resto2021m11 <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/resto2021m11.dta")
+cabeceras2021m11 <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/cabecera2021m11.dta")
+
 ##########################################################################
 
-
-
-
-names(d) <- tolower(names(d)) 
-names(cabecera2021m11)
-
-
-names(d) %in% names(resto2021m11)
-length(names(cabecera2021m11) %in% names(d))
-table(names(area2021m11) %in% names(d))
-table(names(d) %in% names(area2021m11))
-
-sum(area2021m11$hogar)
-sum(d$HOGAR)
-
-names(resto2021m11)[!names(area2021m11) %in% names(d)]
-
-as.numeric(d$directorio)
-
-library(haven)
-resto2021m11 <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/resto2021m11.dta")
-
-# pend probar en noviembre 

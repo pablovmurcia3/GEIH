@@ -62,7 +62,7 @@ merge1 <- merge(caracteristicas,hogarVivie,
                 by = c("DIRECTORIO", "SECUENCIA_P"),
                 all = TRUE)
 names(merge1)
-
+identical(merge1, caracteristicas)
 
 
 sum(merge1$SECUENCIA_P)
@@ -80,8 +80,7 @@ ft <- ft[,orden]
 merge2 <- merge(ft,migra, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
-names(ft)
-names(migra)
+
 
 # 2
 orden <- !(names(noOcu) %in% names(merge2))
@@ -89,7 +88,7 @@ orden[1:3] <- TRUE
 orden
 noOcu <- noOcu[,orden]
 
-merge3 <- merge(noOcu,merge2, 
+merge2 <- merge(noOcu,merge2, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
@@ -99,7 +98,7 @@ orden[1:3] <- TRUE
 orden
 ocu <- ocu[,orden]
 
-merge3 <- merge(ocu,merge2, 
+merge2 <- merge(ocu,merge2, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
@@ -110,7 +109,7 @@ orden[1:3] <- TRUE
 orden
 otrasFor <- otrasFor[,orden]
 
-merge3 <- merge(otrasFor,merge2, 
+merge2 <- merge(otrasFor,merge2, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
@@ -121,7 +120,7 @@ orden[1:3] <- TRUE
 orden
 OtrosIng <- OtrosIng[,orden]
 
-merge3 <- merge(OtrosIng,merge2, 
+merge2 <- merge(OtrosIng,merge2, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
@@ -132,7 +131,21 @@ orden[1:3] <- TRUE
 orden
 tipo <- tipo[,orden]
 
-merge3 <- merge(tipo,merge2, 
+merge2 <- merge(tipo,merge2, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
+
+
+
+orden <- !(names(merge1) %in% names(merge2))
+orden[1:2] <- TRUE
+orden
+merge1 <- merge1[,orden]
+
+mergeF <- merge(merge1,merge2, 
+                by = c("DIRECTORIO", "SECUENCIA_P"),
+                all = TRUE)
+d <-list(ocu, merge1,otrasFor)
+z <- d[-2]
+identical(d,mergeF)
