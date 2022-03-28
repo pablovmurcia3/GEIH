@@ -74,4 +74,3 @@ R <- ProcesamientoGEIH2005("Resto", "2020",  "Diciembre")
 C <- ProcesamientoGEIH2005("Cabecera", "2020", "Diciembre")  
 
 
-

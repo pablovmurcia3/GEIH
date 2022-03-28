@@ -1,12 +1,12 @@
 
 Chequeo("Diciembre")
 
-procesamientoGEIH2005 <- function(zona, mes) {
+procesamientoGEIH2005 <- function(zona, año, mes) {
       
       library(stringi)
       # Paquete necesario para manipular nombres
   
-      file_list <- list.files(path = paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/", mes), full.names = TRUE)
+      file_list <- list.files(path = paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH05 - ", año,"/", mes), full.names = TRUE)
       file_zona <- grep(zona, file_list, value=TRUE)
       # 1) Se crea una lista con todos los archivos
       # 2) se crea una lista con los archivos de la zona seleccioonada en la función
@@ -14,12 +14,13 @@ procesamientoGEIH2005 <- function(zona, mes) {
       lista <- list()
       for (i in 1:length(file_zona)) {
         lista[[i]] <- read.csv(file_zona[i], sep = ";")
+        names(lista[[i]])[1] <- "DIRECTORIO"
       }
       # 3) se leen todos los archos de la lista. 
       # Estas data frames se meten en otra lista
       
       
-      file_names <- list.files(path = paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/2021/", mes))
+      file_names <- list.files(path = paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH05 - ", año,"/", mes))
       names(lista) <- grep(zona,file_names, value=TRUE)
       names(lista) <- toupper(stri_trans_general(names(lista),"Latin-ASCII"))
       # 4) Se les da nombres a los elementos de la lista 
@@ -66,13 +67,27 @@ procesamientoGEIH2005 <- function(zona, mes) {
 
 
 #########################################################################
-A <- procesamientoGEIH2005("Área", "Noviembre")
-R <- procesamientoGEIH2005("Resto", "Noviembre")
-C <- procesamientoGEIH2005("Cabecera", "Noviembre")
+A <- procesamientoGEIH2005("Área","2020" ,"Diciembre")
+R <- procesamientoGEIH2005("Resto", "2020",  "Diciembre")
+C <- procesamientoGEIH2005("Cabecera", "2020", "Diciembre")
 
 library(haven)
 resto2021m11 <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/resto2021m11.dta")
 cabeceras2021m11 <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/cabecera2021m11.dta")
 
 ##########################################################################
+
+año = "2020"
+s <- paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH05 - ", año,"/Fex proyeccion CNPV_2018.csv")
+
+
+Fex2018 <- read_csv(paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH05 - ", año,"/Fex proyeccion CNPV_2018.csv"),";", escape_double = FALSE, trim_ws = TRUE)
+
+
+fex18 <- read.csv(paste0("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH05 - ", año,"/Fex proyeccion CNPV_2018.csv"),sep = ";")
+
+names(Fex_proyeccion_CNPV_2018) <- toupper(stri_trans_general(names(Fex_proyeccion_CNPV_2018),"Latin-ASCII"))
+a1<- merge(A,Fex_proyeccion_CNPV_2018, by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+c1<- merge(C,Fex_proyeccion_CNPV_2018, by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"))
+r1<- merge(R,Fex_proyeccion_CNPV_2018, by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"))
 

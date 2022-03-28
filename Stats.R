@@ -11,6 +11,8 @@ A$PEA <- ifelse(A$OCI == 1 | A$DSI ==1 ,1,0)
 A$fex_c_2011 <- sub(",",".",A$fex_c_2011)
 A$fex_c_2011 <-as.numeric(A$fex_c_2011)
 
+
+
 ## Ocupación 
 
 
@@ -77,7 +79,7 @@ Aage <- A[complete.cases(A$age),]
 
 
 list <- split(Aage, Aage$age) 
-sapply(list, function(x) {
+s<-sapply(list, function(x) {
   PEA <- sum(x[complete.cases(x$PEA) & x$AREA == 11 & x$P6040 >= 15 ,]$FEX_C18)
   Desempleados <- sum(x[x$AREA == 11 & complete.cases(x$DSI) & x$P6040 >= 15,]$FEX_C18)
   TD <- Desempleados/PEA*100
@@ -89,7 +91,7 @@ sapply(list, function(x) {
   TD <- Desempleados/PEA*100
 }) 
 
-
+unname(s)
 
 ## Informalidad
 
