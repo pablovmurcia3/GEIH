@@ -228,6 +228,7 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   
 }
 
+
 b <- StatsGEIH2005(A,C,R)
 
 
