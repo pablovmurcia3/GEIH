@@ -128,17 +128,11 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   Areas13 <- c(PET_13A,PEA_13A,Ocupados_13A,Desempleados_13A,TO_13A,TD_13A, 
               TDH_13A, TDM_13A, TDA_13A, Informales_13A, TI_13A)
   
-  names <- c("PET", "PEA", "Ocupados", "Desocupados", "TO", "TD",
-             "TD hombres", "TD mujeres", "TD < 29", "29 < TD < 39","40 < TD < 49",
-             "50 < TD < 59","TD > 60","Informales", "TI")
-  
-  stats <- data.frame(names,Bogota, Areas13)
-  stats
   
   ### Colombia Stats ###
   
-  cabecera <- cabecera[, names(cabecera) %in% names(R)]
-  rural <- rural[, names(rural) %in% names(rural)]
+  cabecera <- cabecera[, names(cabecera) %in% names(rural)]
+  rural <- rural[, names(rural) %in% names(cabecera)]
 
   cabecera <- cabecera[ , order(names(cabecera))]
   rural <- rural[ , order(names(rural))]
@@ -160,11 +154,82 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   Ocupados_COL <- sum(colombia[complete.cases(colombia$OCI) & colombia$P6040 >= 15,]$FEX_C18)
   TO_COL <- Ocupados_COL/PET_COL*100
   
+  # Desempleo 
+  
+  PEA_COL <- sum(colombia[complete.cases(colombia$PEA)  & colombia$P6040 >= 15 ,]$FEX_C18)
+  Desempleados_COL <- sum(colombia[complete.cases(colombia$DSI) & colombia$P6040 >= 15,]$FEX_C18)
+  TD_COL <- Desempleados_COL/PEA_COL*100
+  
+  # Desempleo por sexo 
+  
+  PEAH_COL <- sum(colombia[complete.cases(colombia$PEA) & colombia$P6020 == 1 & colombia$P6040 >= 15,]$FEX_C18)
+  DesempleadosH_COL <- sum(colombia[complete.cases(colombia$DSI) & colombia$P6020 == 1 & colombia$P6040 >= 15,]$FEX_C18)
+  TDH_COL <- DesempleadosH_COL/PEAH_COL*100
+  
+  PEAM_COL <- sum(colombia[complete.cases(colombia$PEA) & colombia$P6020 == 2 & colombia$P6040 >= 15,]$FEX_C18)
+  DesempleadosM_COL <- sum(colombia[complete.cases(colombia$DSI) & colombia$P6020 == 2 & colombia$P6040 >= 15,]$FEX_C18)
+  TDM_COL <- DesempleadosM_COL/PEAM_COL*100
+  
+  # Desempleo por edad 
+  
+  colombia$age <- cut(colombia$P6040, breaks = c(12,28,39,49, 59, 130))
+  colombiaAge <- colombia[complete.cases(colombia$age),]
+  
+  list <- split(colombiaAge, colombiaAge$age) 
+  TDA_COL <- sapply(list, function(x) {
+    PEA <- sum(x[complete.cases(x$PEA) & x$P6040 >= 15 ,]$FEX_C18)
+    Desempleados <- sum(x[complete.cases(x$DSI) & x$P6040 >= 15,]$FEX_C18)
+    TD <- Desempleados/PEA*100
+  })   
+  
+  TDA_COL <- unname(TDA_COL)
+  
+  # Informalidad
+  
+  colombia$Informalidad <- rep(0, nrow(colombia))
+  
+  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 1 & colombia$P6040 >= 15] <- 1
+  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 6 & colombia$P6040 >= 15] <- 1
+  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 3 & colombia$P6040 >= 15] <- 1
+  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 8 & colombia$P6040 >= 15] <- 1
+  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 4 & colombia$OFICIO>20 & complete.cases(colombia$OFICIO) & colombia$P6040 >= 15] <- 1
+  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 5 & colombia$P6040 >= 15] <- 1
+  colombia$Informalidad[colombia$P6430 == 7 & colombia$P6040 >= 15] <- 1
+  
+  Informales_COL <- sum(colombia[colombia$Informalidad == 1 & colombia$P6040 >= 15,]$FEX_C18)
+  TI_COL <- Informales_COL/Ocupados_COL*100
+  
+
+  PET_COL <- as.character(PET_COL)
+  PEA_COL <- as.character(PEA_COL)
+  Ocupados_COL <- as.character(Ocupados_COL)
+  Desempleados_COL <- as.character(Desempleados_COL)
+  TO_COL <- as.character(TO_COL)
+  TD_COL <- as.character(TD_COL)
+  TDH_COL <- as.character(TDH_COL)
+  TDM_COL <- as.character(TDM_COL)
+  TDA_COL <- as.character(TDA_COL)
+  Informales_COL <- as.character(Informales_COL)
+  TI_COL <- as.character(TI_COL)
+  
+  Colombia <- c(PET_COL,PEA_COL,Ocupados_COL,Desempleados_COL,TO_COL,TD_COL, 
+                TDH_COL, TDM_COL, TDA_COL, Informales_COL, TI_COL)
+  
+  
+  Colombia <- c(PET_COL,PEA_COL,Ocupados_COL,Desempleados_COL,TO_COL,TD_COL, 
+                TDH_COL, TDM_COL, TDA_COL, Informales_COL, TI_COL)
+  
+  names <- c("PET", "PEA", "Ocupados", "Desocupados", "TO", "TD",
+             "TD hombres", "TD mujeres", "TD < 29", "29 < TD < 39","40 < TD < 49",
+             "50 < TD < 59","TD > 60","Informales", "TI")
+  
+  stats <- data.frame(names,Bogota, Areas13, Colombia)
+  stats
   
 }
 
 b <- StatsGEIH2005(A,C,R)
 
-stats <- data.frame(names,Bogota, Areas13)
-stats
+
+
 
