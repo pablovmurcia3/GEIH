@@ -4,7 +4,7 @@ arrange(select(chicago, pm25:year), year)
 
 # Special operator -- chain different operations together -- pipe line
 
-
+sum
 
 A$PET <- ifelse(A$P6040 >= 15,1,0)
 A$PEA <- ifelse(A$OCI == 1 | A$DSI ==1 ,1,0)
@@ -98,12 +98,12 @@ unname(s)
 A$Informalidad <- rep(0, nrow(A))
 
 A$Informalidad[A$P6870 <= 3 & A$P6430 == 1 & A$P6040 >= 15] <- 1
-A$Informalidad[A$P6870 <= 3 & A$P6430 == 6 & A$P6040 >= 15] <- 1
+A$Informalidad[A$P6870 <= 3  & A$P6430 == 6 & A$P6040 >= 15] <- 1
 A$Informalidad[A$P6870 <= 3 & A$P6430 == 3 & A$P6040 >= 15] <- 1
-A$Informalidad[A$P6870 <= 3 & A$P6430 == 8 & A$P6040 >= 15] <- 1
-A$Informalidad[A$P6870 <= 3 & A$P6430 == 4 & A$OFICIO>20 & complete.cases(A$OFICIO) & A$P6040 >= 15] <- 1
-A$Informalidad[A$P6870 <= 3 & A$P6430 == 5 & A$P6040 >= 15] <- 1
-A$Informalidad[A$P6430 == 7 & A$P6040 >= 15] <- 1
+A$Informalidad[A$P6870 <= 3 &   A$P6430 == 8 & A$P6040 >= 15] <- 1
+A$Informalidad[A$P6870 <= 3 &   A$P6430 == 4 & A$OFICIO>20 & complete.cases(A$OFICIO) & A$P6040 >= 15] <- 1
+A$Informalidad[A$P6870 <= 3 &   A$P6430 == 5 & A$P6040 >= 15] <- 1
+A$Informalidad[A$P6430 == 7 &  A$P6040 >= 15] <- 1
 
 # Bogotá
 Ocupados <- sum(A[A$AREA == 11 & complete.cases(A$OCI) & A$P6040 >= 15,]$FEX_C18)

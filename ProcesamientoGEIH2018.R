@@ -32,7 +32,7 @@ procesamientoGEIH2018 <- function(año, mes) {
   orden <- !(names(datVivienda) %in% names(datCaracteristicas))
   orden[1:2] <- TRUE
   datVivienda <- datVivienda[, orden]
-  dataJoin1 <- merge(datCaracteristicas, datVivienda, 
+  dataJoin <- merge(datCaracteristicas, datVivienda, 
                      by = c("DIRECTORIO", "SECUENCIA_P"),
                      all = TRUE)
   # 7) De la data frame de vivienda se eliminan las columnas repetidas
@@ -45,29 +45,21 @@ procesamientoGEIH2018 <- function(año, mes) {
   # Como ya se usaron, se eliminan las bases de viviendas 
   # y de características de la lista que contienen las demás
   
-  dataJoin2 <- lista[[1]]
-  lista <- lista[-1]
   
   for (i in 1:length(lista)) {
     data <- lista[[i]]
-    orden <- !(names(data) %in% names(dataJoin2))
+    orden <- !(names(data) %in% names(dataJoin))
     orden[1:3] <- TRUE
     data <- data[,orden]
-    dataJoin2 <- merge(dataJoin2,data, 
+    dataJoin <- merge(dataJoin,data, 
                       by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                       all = TRUE)
   }
   
   
-  orden <- !(names(dataJoin1) %in% names(dataJoin2))
-  orden[1:2] <- TRUE
-  dataJoin1 <- dataJoin1[, orden]
-  dataJoin <- merge(dataJoin1, dataJoin2, 
-                     by = c("DIRECTORIO", "SECUENCIA_P"),
-                     all = TRUE)
-  
   dataJoin
   
 }
 
-d <- procesamientoGEIH2018("2022", "Enero" )
+base <- procesamientoGEIH2018("2021", "Enero")
+

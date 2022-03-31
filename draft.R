@@ -1,13 +1,13 @@
 library(readr)
-caracteristicas <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2022/Enero/Características generales, seguridad social en salud y educación.csv")
-hogarVivie <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2022/Enero/Datos del hogar y la vivienda.csv")
-ft <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2022/Enero/Fuerza de trabajo.csv")
+caracteristicas <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2021/Enero/Características generales, seguridad social en salud y educación.csv")
+hogarVivie <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2021/Marzo/Datos del hogar y la vivienda.csv")
+ft <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2021/Marzo/Fuerza de trabajo.csv")
 migra <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2022/Enero/Migración.csv")
-noOcu <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2022/Enero/No ocupados.csv")
-ocu <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2022/Enero/Ocupados.csv")
-otrasFor <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2022/Enero/Otras formas de trabajo.csv")
-OtrosIng  <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2022/Enero/Otros ingresos e impuestos.csv")
-tipo <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2022/Enero/Tipo de investigación.csv")
+noOcu <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2021/Marzo/No ocupados.csv")
+ocu <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2021/Enero/Ocupados.csv")
+otrasFor <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2021/Marzo/Otras formas de trabajo.csv")
+OtrosIng  <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2021/Marzo/Otros ingresos e impuestos.csv")
+tipo <- read_csv("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/GEIH18 - 2021/Marzo/Tipo de investigación.csv")
 
 unique(caracteristicas$PERIODO)
 unique(migra$PERIODO)
@@ -37,8 +37,8 @@ tipo <- tipo[,-grep("PERIODO", names(tipo))]
 
 
 
-names(caracteristicas)[1:2]
-names(hogarVivie)[1:2]
+names(caracteristicas)[1:3]
+names(hogarVivie)[1:3]
 names(ft)[1:3]
 names(migra)[1:3]
 names(noOcu)[1:3]
@@ -61,91 +61,86 @@ hogarVivie <- hogarVivie[,orden]
 merge1 <- merge(caracteristicas,hogarVivie, 
                 by = c("DIRECTORIO", "SECUENCIA_P"),
                 all = TRUE)
-names(merge1)
-identical(merge1, caracteristicas)
 
 
-sum(merge1$SECUENCIA_P)
-sum(d$SECUENCIA_P)
 
 
-# 1 los que tienen orden
+#  
 
 
-orden <- !(names(ft) %in% names(migra))
+orden <- !(names(ft) %in% names(merge1))
 orden[1:3] <- TRUE
 orden
 ft <- ft[,orden]
 
-merge2 <- merge(ft,migra, 
+merge2 <- merge(ft,merge1, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
 
 # 2
-orden <- !(names(noOcu) %in% names(merge2))
+orden <- !(names(migra) %in% names(merge2))
 orden[1:3] <- TRUE
 orden
-noOcu <- noOcu[,orden]
+migra <- migra[,orden]
 
-merge2 <- merge(noOcu,merge2, 
+merge3 <- merge(migra,merge2, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
 #3
-orden <- !(names(ocu) %in% names(merge2))
+orden <- !(names(noOcu) %in% names(merge3))
 orden[1:3] <- TRUE
 orden
-ocu <- ocu[,orden]
+noOcu <- noOcu[,orden]
 
-merge2 <- merge(ocu,merge2, 
+merge4 <- merge(noOcu,merge3, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
 
 #4
-orden <- !(names(otrasFor) %in% names(merge2))
+orden <- !(names(ocu) %in% names(merge4))
 orden[1:3] <- TRUE
 orden
-otrasFor <- otrasFor[,orden]
+ocu <- ocu[,orden]
 
-merge2 <- merge(otrasFor,merge2, 
+merge5 <- merge(ocu,merge4, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
 
 #5
-orden <- !(names(OtrosIng) %in% names(merge2))
+orden <- !(names(otrasFor) %in% names(merge5))
 orden[1:3] <- TRUE
 orden
-OtrosIng <- OtrosIng[,orden]
+otrasFor <- otrasFor[,orden]
 
-merge2 <- merge(OtrosIng,merge2, 
+merge6 <- merge(otrasFor,merge5, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
 
 #6
-orden <- !(names(tipo) %in% names(merge2))
+orden <- !(names(OtrosIng) %in% names(merge6))
 orden[1:3] <- TRUE
 orden
-tipo <- tipo[,orden]
+OtrosIng <- OtrosIng[,orden]
 
-merge2 <- merge(tipo,merge2, 
+merge7 <- merge(OtrosIng,merge6, 
                 by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
 
 
 
 
-orden <- !(names(merge1) %in% names(merge2))
-orden[1:2] <- TRUE
+#7
+orden <- !(names(tipo) %in% names(merge7))
+orden[1:3] <- TRUE
 orden
-merge1 <- merge1[,orden]
+tipo <- tipo[,orden]
 
-mergeF <- merge(merge1,merge2, 
-                by = c("DIRECTORIO", "SECUENCIA_P"),
+merge8 <- merge(tipo,merge7, 
+                by = c("DIRECTORIO", "SECUENCIA_P", "ORDEN"),
                 all = TRUE)
-d <-list(ocu, merge1,otrasFor)
-z <- d[-2]
-identical(d,mergeF)
+
