@@ -29,6 +29,19 @@ area13 <- base[complete.cases(base$AREA),]
 unique(area13$AREA)
 # Bogotá
 
+## Particpación  
+
+
+## Participación 
+
+FT_BOG <- sum(bogota[complete.cases(bogota$FT) & bogota$FT == 1 ,]$FEX_C18)
+PET_BOG <- sum(bogota[complete.cases(bogota$PET) ,]$FEX_C18)
+TGP_BOG <- FT_BOG/PET_BOG*100
+
+##Inacivos
+
+PFFT_BOG <- PET_BOG - FT_BOG
+PFFT_BOG
 
 ## ocupación  
 PET_BOG <- sum(bogota[complete.cases(bogota$PET) ,]$FEX_C18)
@@ -41,8 +54,6 @@ Desempleados_BOG <- sum(bogota[complete.cases(bogota$DSI),]$FEX_C18)
 TD_BOG <- Desempleados_BOG/FT_BOG*100
 
 #Desempleo por sexo
-bogota$P3039
-
 FTH_BOG <- sum(bogota[complete.cases(bogota$P3039) & bogota$P3039 == 1 & complete.cases(bogota$FT),]$FEX_C18)
 DesempleadosH_BOG <- sum(bogota[complete.cases(bogota$P3039) & bogota$P3039 == 1 & complete.cases(bogota$DSI),]$FEX_C18)
 TDH_BOG <- DesempleadosH_BOG/FTH_BOG*100
@@ -89,13 +100,28 @@ unique(base$AREA)
 # Colombia
 
 base$FT <- ifelse(base$OCI == 1 | base$DSI ==1 ,1,0)
+unique(base$AREA)
 
+
+
+
+## Participación 
+
+FT_COL <- sum(base[complete.cases(base$FT) & base$FT == 1 ,]$FEX_C18)
+PET_COL <- sum(base[complete.cases(base$PET) ,]$FEX_C18)
+TGP_COL <- FT_COL/PET_COL*100
+
+
+##Inacivos
+
+PFFT_COL <- PET_COL - FT_COL
+PFFT_COL
 ## ocupación  
 
-PET_COL <- sum(base[complete.cases(base$PET) ,]$FEX_C18)
 Ocupados_COL <- sum(base[complete.cases(base$OCI),]$FEX_C18)
 TO_COL <- Ocupados_COL/PET_COL*100
 TO_COL
+
 ## desempleo   
 FT_COL <- sum(base[complete.cases(base$FT),]$FEX_C18)
 Desempleados_COL <- sum(base[complete.cases(base$DSI),]$FEX_C18)
@@ -146,8 +172,17 @@ TI_COL <- Informales_COL/Ocupados_COL*100
 unique((base$AREA))
 
 area13 <- base[base$AREA %in% c("11" ,"05", "76", "08", "68", "17", "66", "54", "52", "73", "23", "13", "50", "5", "8"),]
-unique((area13$AREA))
+}
+## Participación 
 
+FT_13A <- sum(area13[complete.cases(area13$FT) & area13$FT == 1 ,]$FEX_C18)
+PET_13A <- sum(area13[complete.cases(area13$PET) ,]$FEX_C18)
+TGP_13A <- FT_13A/PET_13A*100
+
+##Inacivos
+
+PFFT_13A <- PET_13A - FT_13A
+PFFT_13A
 
 ## ocupación  
 
@@ -248,7 +283,5 @@ TI_13A <- Informales_13A/Ocupados_13A*100
  
 # regreso a presencialidad - ver en pulso social y anexarlo a tasa de ocupación por sexo 
 # aumento de TO femenina 
-unique(area13$OFICIO_C8)
-
 
 # Y por sectores? 

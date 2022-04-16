@@ -61,7 +61,7 @@ procesamientoGEIH2018 <- function(año, mes) {
   
 }
 
-base <- procesamientoGEIH2018("2022", "Enero")
+base <- procesamientoGEIH2018("2021", "Abril")
 
 unique(caracteristicas$AREA)
 unique(hogarVivie$AREA)

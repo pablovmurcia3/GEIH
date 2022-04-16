@@ -8,29 +8,35 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
     area$FEX_C18 <-as.numeric(area$FEX_C18)
   }
   
-  ### Bogotá Stats ###
+  ################ Bogotá ##############################################
+  
+  # TGP
+  FT_BOG <- sum(area[complete.cases(area$PEA) & area$AREA == 11 & area$P6040 >= 15 ,]$FEX_C18)
+  PET_BOG <- sum(area[area$PET ==1 & area$AREA == 11 ,]$FEX_C18)
+  TGP_BOG <- FT_BOG/PET_BOG*100
+  
+  # Población Inactiva
+  PFFT_BOG <- PET_BOG - FT_BOG
   
   #Ocupación 
-  
-  PET_BOG <- sum(area[area$PET ==1 & area$AREA == 11 ,]$FEX_C18)
   Ocupados_BOG <- sum(area[area$AREA == 11 & complete.cases(area$OCI) & area$P6040 >= 15,]$FEX_C18)
   TO_Bog <- Ocupados_BOG/PET_BOG*100
   
   #Desempleo 
   
-  PEA_BOG <- sum(area[complete.cases(area$PEA) & area$AREA == 11 & area$P6040 >= 15 ,]$FEX_C18)
+  FT_BOG <- sum(area[complete.cases(area$PEA) & area$AREA == 11 & area$P6040 >= 15 ,]$FEX_C18)
   Desempleados_BOG <- sum(area[area$AREA == 11 & complete.cases(area$DSI)  & area$P6040 >= 15,]$FEX_C18)
-  TD_BOG <- Desempleados_BOG/PEA_BOG*100
+  TD_BOG <- Desempleados_BOG/FT_BOG*100
   
   #Desempleo por sexo
   
-  PEAH_BOG <- sum(area[complete.cases(area$PEA) & area$AREA == 11 & area$P6020 == 1 & area$P6040 >= 15,]$FEX_C18)
+  FTH_BOG <- sum(area[complete.cases(area$PEA) & area$AREA == 11 & area$P6020 == 1 & area$P6040 >= 15,]$FEX_C18)
   DesempleadosH_BOG <- sum(area[area$AREA == 11 & complete.cases(area$DSI) & area$P6020 == 1 & area$P6040 >= 15,]$FEX_C18)
-  TDH_BOG <- DesempleadosH_BOG/PEAH_BOG*100
+  TDH_BOG <- DesempleadosH_BOG/FTH_BOG*100
   
-  PEAM_BOG <- sum(area[complete.cases(area$PEA) & area$AREA == 11 & area$P6020 == 2 & area$P6040 >= 15,]$FEX_C18)
+  FTM_BOG <- sum(area[complete.cases(area$PEA) & area$AREA == 11 & area$P6020 == 2 & area$P6040 >= 15,]$FEX_C18)
   DesempleadosM_BOG <- sum(area[area$AREA == 11 & complete.cases(area$DSI) & area$P6020 == 2 & area$P6040 >= 15,]$FEX_C18)
-  TDM_BOG <- DesempleadosM_BOG/PEAM_BOG*100
+  TDM_BOG <- DesempleadosM_BOG/FTM_BOG*100
   
   #Desempleo por edad
   
@@ -60,11 +66,12 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   Informales_BOG <- sum(area[area$AREA == 11 & area$Informalidad == 1 & area$P6040 >= 15,]$FEX_C18)
   TI_BOG <- Informales_BOG/Ocupados_BOG*100
   
-  
   PET_BOG <- as.character(PET_BOG)
-  PEA_BOG <- as.character(PEA_BOG)
+  FT_BOG <- as.character(FT_BOG)
+  PFFT_BOG <- as.character(PFFT_BOG)
   Ocupados_BOG <- as.character(Ocupados_BOG)
   Desempleados_BOG <- as.character(Desempleados_BOG)
+  TGP_BOG <- as.character(TGP_BOG)
   TO_Bog <- as.character(TO_Bog)
   TD_BOG <- as.character(TD_BOG)
   TDH_BOG <- as.character(TDH_BOG)
@@ -73,32 +80,38 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   Informales_BOG <- as.character(Informales_BOG)
   TI_BOG <- as.character(TI_BOG)
     
-  Bogota <- c(PET_BOG,PEA_BOG,Ocupados_BOG,Desempleados_BOG,TO_Bog,TD_BOG, 
-              TDH_BOG, TDM_BOG, TDA_BOG, Informales_BOG, TI_BOG)
+  Bogota <- c(PET_BOG,FT_BOG,PFFT_BOG, Ocupados_BOG,Desempleados_BOG,TGP_BOG,
+              TO_Bog,TD_BOG, TDH_BOG, TDM_BOG, TDA_BOG)
   
-  ### 13 áreas Stats ###
+  ################ 13 áreas  ##############################################
+  
+  # TGP
+  FT_13A <- sum(area[complete.cases(area$PEA) & area$P6040 >= 15 ,]$FEX_C18)
+  PET_13A <- sum(area[area$PET ==1,]$FEX_C18)
+  TGP_13A <- FT_13A/PET_13A*100
+  
+  # Población Inactiva
+  PFFT_13A <- PET_13A - FT_13A
   
   #Ocupación 
-  
-  PET_13A <- sum(area[area$PET ==1,]$FEX_C18)
   Ocupados_13A <- sum(area[complete.cases(area$OCI) & area$P6040 >= 15,]$FEX_C18)
   TO_13A <- Ocupados_13A/PET_13A*100
   
   #Desempleo 
   
-  PEA_13A <- sum(area[complete.cases(area$PEA) & area$P6040 >= 15 ,]$FEX_C18)
+  FT_13A <- sum(area[complete.cases(area$PEA) & area$P6040 >= 15 ,]$FEX_C18)
   Desempleados_13A <- sum(area[complete.cases(area$DSI)  & area$P6040 >= 15,]$FEX_C18)
-  TD_13A <- Desempleados_13A/PEA_13A*100
+  TD_13A <- Desempleados_13A/FT_13A*100
   
   #Desempleo por sexo
   
-  PEAH_13A <- sum(area[complete.cases(area$PEA) & area$P6020 == 1 & area$P6040 >= 15,]$FEX_C18)
+  FTH_13A <- sum(area[complete.cases(area$PEA) & area$P6020 == 1 & area$P6040 >= 15,]$FEX_C18)
   DesempleadosH_13A <- sum(area[complete.cases(area$DSI) & area$P6020 == 1 & area$P6040 >= 15,]$FEX_C18)
-  TDH_13A <- DesempleadosH_13A/PEAH_13A*100
+  TDH_13A <- DesempleadosH_13A/FTH_13A*100
   
-  PEAM_13A <- sum(area[complete.cases(area$PEA) & area$P6020 == 2 & area$P6040 >= 15,]$FEX_C18)
+  FTM_13A <- sum(area[complete.cases(area$PEA) & area$P6020 == 2 & area$P6040 >= 15,]$FEX_C18)
   DesempleadosM_13A <- sum(area[complete.cases(area$DSI) & area$P6020 == 2 & area$P6040 >= 15,]$FEX_C18)
-  TDM_13A <- DesempleadosM_13A/PEAM_13A*100
+  TDM_13A <- DesempleadosM_13A/FTM_13A*100
   
   #Desempleo por edad
 
@@ -114,9 +127,11 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   TI_13A <- Informales_13A/Ocupados_13A*100
   
   PET_13A <- as.character(PET_13A)
-  PEA_13A <- as.character(PEA_13A)
+  FT_13A <- as.character(FT_13A)
+  PFFT_13A <- as.character(PFFT_13A)
   Ocupados_13A <- as.character(Ocupados_13A)
   Desempleados_13A <- as.character(Desempleados_13A)
+  TGP_13A <- as.character(TGP_13A)
   TO_13A <- as.character(TO_13A)
   TD_13A <- as.character(TD_13A)
   TDH_13A <- as.character(TDH_13A)
@@ -125,11 +140,10 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   Informales_13A <- as.character(Informales_13A)
   TI_13A <- as.character(TI_13A)
   
-  Areas13 <- c(PET_13A,PEA_13A,Ocupados_13A,Desempleados_13A,TO_13A,TD_13A, 
-              TDH_13A, TDM_13A, TDA_13A, Informales_13A, TI_13A)
+  Areas13 <- c(PET_13A,FT_13A,PFFT_13A, Ocupados_13A,Desempleados_13A,TGP_13A,
+               TO_13A,TD_13A, TDH_13A, TDM_13A, TDA_13A)
   
-  
-  ### Colombia Stats ###
+  ################ Colombia ##############################################
   
   cabecera <- cabecera[, names(cabecera) %in% names(rural)]
   rural <- rural[, names(rural) %in% names(cabecera)]
@@ -147,6 +161,14 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
     colombia$FEX_C18 <- sub(",",".",colombia$FEX_C18)
     colombia$FEX_C18 <-as.numeric(colombia$FEX_C18)
   }
+  
+  # TGP
+  FT_COL<- sum(colombia[complete.cases(colombia$PEA)  & colombia$P6040 >= 15 ,]$FEX_C18)
+  PET_COL <- sum(colombia[colombia$PET ==1 ,]$FEX_C18)
+  TGP_COL <- FT_COL/PET_COL*100
+  
+  # Población Inactiva
+  PFFT_COL <- PET_COL - FT_COL
   
   ## Ocupación 
   
@@ -199,11 +221,12 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   Informales_COL <- sum(colombia[colombia$Informalidad == 1 & colombia$P6040 >= 15,]$FEX_C18)
   TI_COL <- Informales_COL/Ocupados_COL*100
   
-
   PET_COL <- as.character(PET_COL)
-  PEA_COL <- as.character(PEA_COL)
+  FT_COL <- as.character(FT_COL)
+  PFFT_COL <- as.character(PFFT_COL)
   Ocupados_COL <- as.character(Ocupados_COL)
   Desempleados_COL <- as.character(Desempleados_COL)
+  TGP_COL <- as.character(TGP_COL)
   TO_COL <- as.character(TO_COL)
   TD_COL <- as.character(TD_COL)
   TDH_COL <- as.character(TDH_COL)
@@ -212,25 +235,45 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   Informales_COL <- as.character(Informales_COL)
   TI_COL <- as.character(TI_COL)
   
-  Colombia <- c(PET_COL,PEA_COL,Ocupados_COL,Desempleados_COL,TO_COL,TD_COL, 
-                TDH_COL, TDM_COL, TDA_COL, Informales_COL, TI_COL)
+  Colombia <- c(PET_COL,FT_COL,PFFT_COL, Ocupados_COL,Desempleados_COL,TGP_COL,
+                TO_COL,TD_COL, TDH_COL, TDM_COL, TDA_COL)
   
   
-  Colombia <- c(PET_COL,PEA_COL,Ocupados_COL,Desempleados_COL,TO_COL,TD_COL, 
-                TDH_COL, TDM_COL, TDA_COL, Informales_COL, TI_COL)
-  
-  names <- c("PET", "PEA", "Ocupados", "Desocupados", "TO", "TD",
+  names <- c("PET", "FT","PFFT", "Ocupados", "Desocupados", "TGP", "TO", "TD",
              "TD hombres", "TD mujeres", "TD < 29", "29 < TD < 39","40 < TD < 49",
-             "50 < TD < 59","TD > 60","Informales", "TI")
+             "50 < TD < 59","TD > 60")
   
   stats <- data.frame(names,Bogota, Areas13, Colombia)
+  stats$Bogota <- as.numeric(stats$Bogota)
+  stats$Areas13 <- as.numeric(stats$Areas13)
+  stats$Colombia <- as.numeric(stats$Colombia)
   stats
   
 }
 
 
-b <- StatsGEIH2005(A,C,R)
+o <- StatsGEIH2005(A,C,R)
+
+library("writexl")
+write_xlsx(o,"o.xlsx")
 
 
+
+
+
+
+### Bogotá Stats ###
+
+# TGP
+
+A$PET <- ifelse(A$P6040 >= 15,1,0)
+A$PEA <- ifelse(A$OCI == 1 | A$DSI ==1 ,1,0)
+
+FT_BOG <- sum(A[complete.cases(A$PEA) & A$AREA == 11 & A$P6040 >= 15 ,]$FEX_C18)
+PET_BOG <- sum(A[A$PET ==1 & A$AREA == 11 ,]$FEX_C18)
+TGP_BOG <- FT_BOG/PET_BOG*100
+
+# Población Inactiva
+PFFT_BOG <- PET_BOG - FT_BOG
 
 
