@@ -70,7 +70,7 @@
   
 R$P6870[R$P6870<3]
 
-A <- ProcesamientoGEIH2005("Área","2019" ,"Diciembre")
-R <- ProcesamientoGEIH2005("Resto", "2019",  "Diciembre")
-C <- ProcesamientoGEIH2005("Cabecera", "2019", "Diciembre")  
+A <- ProcesamientoGEIH2005("Área","2019" ,"Octubre")
+R <- ProcesamientoGEIH2005("Resto", "2019",  "Octubre")
+C <- ProcesamientoGEIH2005("Cabecera", "2019", "Octubre")  
 unique(C$OFICIO)

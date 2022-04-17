@@ -53,18 +53,18 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   TDA_BOG <- unname(TDA_BOG)
   
   #Informalidad
-  area$Informalidad <- rep(0, nrow(area))
+  #area$Informalidad <- rep(0, nrow(area))
   
-  area$Informalidad[area$P6870 <= 3 & area$P6430 == 1 & area$P6040 >= 15] <- 1
-  area$Informalidad[area$P6870 <= 3 & area$P6430 == 6 & area$P6040 >= 15] <- 1
-  area$Informalidad[A$P6870 <= 3 & area$P6430 == 3 & area$P6040 >= 15] <- 1
-  area$Informalidad[area$P6870 <= 3 & area$P6430 == 8 & area$P6040 >= 15] <- 1
-  area$Informalidad[A$P6870 <= 3 & area$P6430 == 4 & area$OFICIO>20 & complete.cases(area$OFICIO) & area$P6040 >= 15] <- 1
-  area$Informalidad[area$P6870 <= 3 & area$P6430 == 5 & area$P6040 >= 15] <- 1
-  area$Informalidad[area$P6430 == 7 & area$P6040 >= 15] <- 1
+  #area$Informalidad[area$P6870 <= 3 & area$P6430 == 1 & area$P6040 >= 15] <- 1
+  #area$Informalidad[area$P6870 <= 3 & area$P6430 == 6 & area$P6040 >= 15] <- 1
+  #area$Informalidad[A$P6870 <= 3 & area$P6430 == 3 & area$P6040 >= 15] <- 1
+  #area$Informalidad[area$P6870 <= 3 & area$P6430 == 8 & area$P6040 >= 15] <- 1
+  #area$Informalidad[A$P6870 <= 3 & area$P6430 == 4 & area$OFICIO>20 & complete.cases(area$OFICIO) & area$P6040 >= 15] <- 1
+  #area$Informalidad[area$P6870 <= 3 & area$P6430 == 5 & area$P6040 >= 15] <- 1
+  #area$Informalidad[area$P6430 == 7 & area$P6040 >= 15] <- 1
   
-  Informales_BOG <- sum(area[area$AREA == 11 & area$Informalidad == 1 & area$P6040 >= 15,]$FEX_C18)
-  TI_BOG <- Informales_BOG/Ocupados_BOG*100
+  #Informales_BOG <- sum(area[area$AREA == 11 & area$Informalidad == 1 & area$P6040 >= 15,]$FEX_C18)
+  #TI_BOG <- Informales_BOG/Ocupados_BOG*100
   
   PET_BOG <- as.character(PET_BOG)
   FT_BOG <- as.character(FT_BOG)
@@ -77,8 +77,8 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   TDH_BOG <- as.character(TDH_BOG)
   TDM_BOG <- as.character(TDM_BOG)
   TDA_BOG <- as.character(TDA_BOG)
-  Informales_BOG <- as.character(Informales_BOG)
-  TI_BOG <- as.character(TI_BOG)
+  #Informales_BOG <- as.character(Informales_BOG)
+  #TI_BOG <- as.character(TI_BOG)
     
   Bogota <- c(PET_BOG,FT_BOG,PFFT_BOG, Ocupados_BOG,Desempleados_BOG,TGP_BOG,
               TO_Bog,TD_BOG, TDH_BOG, TDM_BOG, TDA_BOG)
@@ -123,8 +123,6 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   
   TDA_13A <- unname(TDA_13A)
   
-  Informales_13A <- sum(area[area$Informalidad == 1 & area$P6040 >= 15,]$FEX_C18)
-  TI_13A <- Informales_13A/Ocupados_13A*100
   
   PET_13A <- as.character(PET_13A)
   FT_13A <- as.character(FT_13A)
@@ -137,8 +135,8 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   TDH_13A <- as.character(TDH_13A)
   TDM_13A <- as.character(TDM_13A)
   TDA_13A <- as.character(TDA_13A)
-  Informales_13A <- as.character(Informales_13A)
-  TI_13A <- as.character(TI_13A)
+  #Informales_13A <- as.character(Informales_13A)
+  #TI_13A <- as.character(TI_13A)
   
   Areas13 <- c(PET_13A,FT_13A,PFFT_13A, Ocupados_13A,Desempleados_13A,TGP_13A,
                TO_13A,TD_13A, TDH_13A, TDM_13A, TDA_13A)
@@ -208,18 +206,18 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   
   # Informalidad
   
-  colombia$Informalidad <- rep(0, nrow(colombia))
+  #colombia$Informalidad <- rep(0, nrow(colombia))
   
-  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 1 & colombia$P6040 >= 15] <- 1
-  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 6 & colombia$P6040 >= 15] <- 1
-  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 3 & colombia$P6040 >= 15] <- 1
-  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 8 & colombia$P6040 >= 15] <- 1
-  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 4 & colombia$OFICIO>20 & complete.cases(colombia$OFICIO) & colombia$P6040 >= 15] <- 1
-  colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 5 & colombia$P6040 >= 15] <- 1
-  colombia$Informalidad[colombia$P6430 == 7 & colombia$P6040 >= 15] <- 1
+  #colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 1 & colombia$P6040 >= 15] <- 1
+  #colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 6 & colombia$P6040 >= 15] <- 1
+  #colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 3 & colombia$P6040 >= 15] <- 1
+  #colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 8 & colombia$P6040 >= 15] <- 1
+  #colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 4 & colombia$OFICIO>20 & complete.cases(colombia$OFICIO) & colombia$P6040 >= 15] <- 1
+  #colombia$Informalidad[colombia$P6870 <= 3 & colombia$P6430 == 5 & colombia$P6040 >= 15] <- 1
+  #colombia$Informalidad[colombia$P6430 == 7 & colombia$P6040 >= 15] <- 1
   
-  Informales_COL <- sum(colombia[colombia$Informalidad == 1 & colombia$P6040 >= 15,]$FEX_C18)
-  TI_COL <- Informales_COL/Ocupados_COL*100
+  #Informales_COL <- sum(colombia[colombia$Informalidad == 1 & colombia$P6040 >= 15,]$FEX_C18)
+  #TI_COL <- Informales_COL/Ocupados_COL*100
   
   PET_COL <- as.character(PET_COL)
   FT_COL <- as.character(FT_COL)
@@ -232,8 +230,8 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   TDH_COL <- as.character(TDH_COL)
   TDM_COL <- as.character(TDM_COL)
   TDA_COL <- as.character(TDA_COL)
-  Informales_COL <- as.character(Informales_COL)
-  TI_COL <- as.character(TI_COL)
+  #Informales_COL <- as.character(Informales_COL)
+  #TI_COL <- as.character(TI_COL)
   
   Colombia <- c(PET_COL,FT_COL,PFFT_COL, Ocupados_COL,Desempleados_COL,TGP_COL,
                 TO_COL,TD_COL, TDH_COL, TDM_COL, TDA_COL)
