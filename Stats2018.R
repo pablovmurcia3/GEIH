@@ -11,8 +11,36 @@ base$FT <- ifelse(base$OCI == 1 | base$DSI ==1 ,1,0)
 # Bogotá
 bogota <- base[base$AREA == "11" & complete.cases(base$AREA),]
 
-unique(bogota$AREA)
 
+bogota <- A[A$AREA == "11" & complete.cases(A$AREA),]
+
+sum(bogota$FEX_C18)
+
+7640512/48359029
+>
+unique(bogota$P6210)
+A <-sum(bogota[bogota$P6210 == 6, ]$FEX_C18, na.rm = TRUE)
+
+B <- sum(A[A$P6210 == 6, ]$FEX_C18, na.rm = TRUE)
+
+2217085/8784434
+table(bogota$P6210)
+
+e =bogota[bogota$P6210 == 4, ]
+
+
+C <- C[, names(C) %in% names(R)]
+R <- R[, names(R) %in% names(C)]
+
+C <- C[ , order(names(C))]
+R <- R[ , order(names(R))]
+
+
+
+
+colombia <- rbind(C,R)
+
+sum(colombia$FEX_C18)
 
 #
 unique(caracteristicas$AREA)

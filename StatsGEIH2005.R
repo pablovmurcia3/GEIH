@@ -9,12 +9,20 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   }
   
   ################ Bogotá ##############################################
+
+sum(BOG_JOV$FEX_C18)
+
+
   
+
+
   # TGP
   FT_BOG <- sum(area[complete.cases(area$PEA) & area$AREA == 11 & area$P6040 >= 15 ,]$FEX_C18)
   PET_BOG <- sum(area[area$PET ==1 & area$AREA == 11 ,]$FEX_C18)
   TGP_BOG <- FT_BOG/PET_BOG*100
   
+  
+
   # Población Inactiva
   PFFT_BOG <- PET_BOG - FT_BOG
   
