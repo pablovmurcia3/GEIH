@@ -1,6 +1,5 @@
 install.packages("writexl")
 library(writexl)
-
 Ene <- ProcesamientoGEIH2005("Área","2021" ,"Enero")
 Feb <- ProcesamientoGEIH2005("Área","2021" ,"Febrero")
 Mar <- ProcesamientoGEIH2005("Área","2021" ,"Marzo")
@@ -8,9 +7,9 @@ May <- ProcesamientoGEIH2005("Área","2021" ,"Mayo")
 Jun <- ProcesamientoGEIH2005("Área","2021" ,"Junio")
 Jul <- ProcesamientoGEIH2005("Área","2021" ,"Julio")
 Ago <- ProcesamientoGEIH2005("Área","2021" ,"Agosto")
-Octu <- ProcesamientoGEIH2005("Área","2021" ,"Octubre")
 Nov <- ProcesamientoGEIH2005("Área","2021" ,"Noviembre")
 Dic <- ProcesamientoGEIH2005("Área","2021" ,"Diciembre")
+
 library(haven)
 Abr <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/Faltantes/Area2021m4.dta")
 Sep <- read_dta("C:/Users/pablo/OneDrive - Universidad del rosario/Probogota/Observatorio/Mercado Laboral/Análisis de datos/GEIH/Faltantes/area2021m9.dta")
@@ -417,4 +416,152 @@ write_xlsx(G13(Nov),paste0("output/Nov.xlsx"))
 write_xlsx(G13(Dic),paste0("output/Dic.xlsx"))
 
 
-# G9
+# G14
+
+
+G14 <- function(A){
+  
+  # Preparación  
+  bog <- A[A$AREA == 11, ]
+  bog <- bog[bog$P6040 > 13,]
+  bog$PEA <- ifelse(bog$OCI == 1 | bog$DSI ==1 ,1,0)  
+  bog$PEA[is.na(bog$PEA)] <- 0
+  bog$PET <- ifelse(bog$P6040 >= 12,1,0)
+  bog$DSI[is.na(bog$DSI)] <- 0
+  bog$fex_c_2011 <- as.numeric(sub(",",".",bog$fex_c_2011))
+  bog$OCI[is.na(bog$OCI)] <- 0
+  bog$P6220[is.na(bog$P6220)] <- 1
+  
+  
+  ##################### Gráfica 14 ############################################
+  
+  bog_H <- bog[bog$P6020 == 1,]
+  bog_M <- bog[bog$P6020 == 2,]
+  
+  
+  list_H_ocu <- split(bog_H,bog_H$P6220)
+  Ocu_H_educ <- sapply(list_H_ocu, function(x) {
+    Ocu <- sum(x[x$PET == 1 & x$OCI == 1,]$fex_c_2011)
+  }) 
+  
+  list_M_ocu <- split(bog_M,bog_M$P6220) 
+  Ocu_M_educ <- sapply(list_M_ocu, function(x) {
+    Ocu <- sum(x[x$PET == 1 & x$OCI == 1,]$fex_c_2011)
+  }) 
+  
+  
+  ##################### Vector Resultante ####################################
+  
+  names <-  c(names(Ocu_H_educ), names(Ocu_M_educ))
+  values <- c(Ocu_H_educ, Ocu_M_educ)
+  
+  stats <- data.frame(names,values)
+  
+  stats
+  
+}
+
+
+write_xlsx(G14(Ene),paste0("output/Ene.xlsx"))
+write_xlsx(G14(Feb),paste0("output/Feb.xlsx"))
+write_xlsx(G14(Mar),paste0("output/Mar.xlsx"))
+write_xlsx(G14(Abr),paste0("output/Abr.xlsx"))
+write_xlsx(G14(May),paste0("output/May.xlsx"))
+write_xlsx(G14(Jun),paste0("output/Jun.xlsx"))
+write_xlsx(G14(Jul),paste0("output/Jul.xlsx"))
+write_xlsx(G14(Ago),paste0("output/Ago.xlsx"))
+write_xlsx(G14(Sep),paste0("output/Sep.xlsx"))
+write_xlsx(G14(Oct),paste0("output/Oct.xlsx"))
+write_xlsx(G14(Nov),paste0("output/Nov.xlsx"))
+write_xlsx(G14(Dic),paste0("output/Dic.xlsx"))
+
+
+
+# G15
+
+Ene$P6220[P6220 == 5] <- 4
+
+unique(Ene$P6220)
+G15 <- function(A){
+  # Preparación  
+  bog <- A[A$AREA == 11, ]
+  bog <- bog[bog$P6040 > 13,]
+  bog$PEA <- ifelse(bog$OCI == 1 | bog$DSI ==1 ,1,0)  
+  bog$PEA[is.na(bog$PEA)] <- 0
+  bog$PET <- ifelse(bog$P6040 >= 12,1,0)
+  bog$DSI[is.na(bog$DSI)] <- 0
+  bog$fex_c_2011 <- as.numeric(sub(",",".",bog$fex_c_2011))
+  bog$OCI[is.na(bog$OCI)] <- 0
+  bog$P6220[is.na(bog$P6220)] <- 1
+  bog$P6220[bog$P6220 == 5] <- 4
+  bog$age <- cut(bog$P6040, breaks = c(13,28,59, 130))
+  
+  ##################### Gráfica 15.1 ############################################
+  
+  
+  
+  
+  bog_H <- bog[bog$P6020 == 1,]
+  bog_M <- bog[bog$P6020 == 2,]
+  
+  hombre <- weighted.mean(bog_H$INGLABO, bog_H$fex_c_2011, na.rm =TRUE)
+  mujer <- weighted.mean(bog_M$INGLABO, bog_M$fex_c_2011, na.rm =TRUE)
+  
+  
+  list_H_ocu <- split(bog_H,bog_H$P6220)
+  Ing_H_educ <- sapply(list_H_ocu, function(x) {
+    wm <- weighted.mean(x$INGLABO, x$fex_c_2011, na.rm =TRUE)
+  }) 
+  
+  list_M_ocu <- split(bog_M,bog_M$P6220) 
+  Ing_M_educ <- sapply(list_M_ocu, function(x) {
+    wm <- weighted.mean(x$INGLABO, x$fex_c_2011, na.rm =TRUE)
+  }) 
+  
+  ##################### Gráfica 15.2 ############################################
+  
+  list_H_age <- split(bog_H,bog_H$age) 
+  Ing_H_age <- sapply(list_H_age, function(x) {
+    wm <- weighted.mean(x$INGLABO, x$fex_c_2011, na.rm =TRUE)
+  }) 
+  
+  list_M_age <- split(bog_M,bog_M$age) 
+  Ing_M_age <- sapply(list_M_age, function(x) {
+    wm <- weighted.mean(x$INGLABO, x$fex_c_2011, na.rm =TRUE)
+  }) 
+  
+  
+  ##################### Vector Resultante ####################################
+  
+  names <-  c(names(Ing_H_educ), names(list_M_ocu), names(Ing_H_age),
+              names(Ing_M_age), "hombre", "mujer")
+  values <- c(Ing_H_educ, Ing_M_educ,Ing_H_age,Ing_M_age, hombre, mujer)
+  
+  stats <- data.frame(names,values)
+  
+  stats
+}
+
+write_xlsx(G15(Ene),paste0("output/Ene.xlsx"))
+write_xlsx(G15(Feb),paste0("output/Feb.xlsx"))
+write_xlsx(G15(Mar),paste0("output/Mar.xlsx"))
+write_xlsx(G15(Abr),paste0("output/Abr.xlsx"))
+write_xlsx(G15(May),paste0("output/May.xlsx"))
+write_xlsx(G15(Jun),paste0("output/Jun.xlsx"))
+write_xlsx(G15(Jul),paste0("output/Jul.xlsx"))
+write_xlsx(G15(Ago),paste0("output/Ago.xlsx"))
+write_xlsx(G15(Sep),paste0("output/Sep.xlsx"))
+write_xlsx(G15(Oct),paste0("output/Oct.xlsx"))
+write_xlsx(G15(Nov),paste0("output/Nov.xlsx"))
+write_xlsx(G15(Dic),paste0("output/Dic.xlsx"))
+
+
+
+
+
+
+
+library("spatstat")
+Ene$OCI
+weighted.mean(Ene$INGLABO, Ene$fex_c_2011, na.rm =TRUE)
+median(Ene$INGLABO, na.rm = TRUE)
