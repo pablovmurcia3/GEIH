@@ -2,14 +2,16 @@ StatsGEIH2005 <- function(area, cabecera,  rural){
   
   # Transformación base de área
   area$PET <- ifelse(area$P6040 >= 15,1,0)
-  area$PEA <- ifelse(area$OCI == 1 | area$DSI ==1 ,1,0)
+  area$PEA <- ifelse(area$O
+CI == 1 | area$DSI ==1 ,1,0)
   if(is.character(area$FEX_C18)){
     area$FEX_C18 <- sub(",",".",area$FEX_C18)
-    area$FEX_C18 <-as.numeric(area$FEX_C18)
+    area$FEX_C18 <-as.numeric(area$FE
+                              
+                              X_C18)
   }
   
   ################ Bogotá ##############################################
-
 sum(BOG_JOV$FEX_C18)
 
 
