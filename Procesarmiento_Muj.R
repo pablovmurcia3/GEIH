@@ -731,52 +731,253 @@ write_xlsx(G17(Dic),paste0("output/Dic.xlsx"))
 
 
 
+# G18
+
+
+G18 <- function(A){
+  
+  # Preparación  
+  bog <- A[A$AREA == 11, ]
+  bog <- bog[bog$P6040 > 13,]
+  bog$PEA <- ifelse(bog$OCI == 1 | bog$DSI ==1 ,1,0)  
+  bog$PEA[is.na(bog$PEA)] <- 0
+  bog$PET <- ifelse(bog$P6040 >= 12,1,0)
+  bog$DSI[is.na(bog$DSI)] <- 0
+  bog$fex_c_2011 <- as.numeric(sub(",",".",bog$fex_c_2011))
+  bog$OCI[is.na(bog$OCI)] <- 0
+  bog$P6220[is.na(bog$P6220)] <- 1
+  bog$RAMA2D_R4 <- as.numeric(bog$RAMA2D_R4)
+  
+  ##################### Gráfica 16 ############################################
+  
+  bog$P6870 <- as.numeric(bog$P6870)
+  bog$P6430 <- as.numeric(bog$P6430)
+
+  
+  bog$Informalidad <- numeric(length = dim(bog)[1])
+  
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 1] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 6] <- 1
+  bog$Informalidad[bog$P6430 == 7] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 3] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 8 ] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 4 & bog$OFICIO > 20] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 5 & bog$P6040 >= 15] <- 1
+  
+  
+  Ocu_F <- sum(bog[bog$PET == 1 & bog$OCI == 1 & bog$Informalidad == 0,]$fex_c_2011)
+  Ocu_I <- sum(bog[bog$PET == 1 & bog$OCI == 1 & bog$Informalidad == 1,]$fex_c_2011)
+  
+  ing_F <- weighted.mean(bog[bog$Informalidad == 0,]$INGLABO, bog[bog$Informalidad == 0,]$fex_c_2011, na.rm =TRUE)
+  ing_I <- weighted.mean(bog[bog$Informalidad == 1,]$INGLABO, bog[bog$Informalidad == 1,]$fex_c_2011, na.rm =TRUE)
+  
+  
+  bog_H <- bog[bog$P6020 == 1,]
+  bog_M <- bog[bog$P6020 == 2,]
+  
+  
+
+  Ocu_H_F <- sum(bog_H[bog_H$PET == 1 & bog_H$OCI == 1 & bog_H$Informalidad == 0,]$fex_c_2011)
+  Ocu_H_I <- sum(bog_H[bog_H$PET == 1 & bog_H$OCI == 1 & bog_H$Informalidad == 1,]$fex_c_2011)
+  
+  Ing_H_F <- weighted.mean(bog_H[bog_H$Informalidad == 0,]$INGLABO, bog_H[bog_H$Informalidad == 0,]$fex_c_2011, na.rm =TRUE)
+  ing_H_I <- weighted.mean(bog_H[bog_H$Informalidad == 1,]$INGLABO, bog_H[bog_H$Informalidad == 1,]$fex_c_2011, na.rm =TRUE)
+  
+  Ocu_M_F <- sum(bog_M[bog_M$PET == 1 & bog_M$OCI == 1 & bog_M$Informalidad == 0,]$fex_c_2011)
+  Ocu_M_I <- sum(bog_M[bog_M$PET == 1 & bog_M$OCI == 1 & bog_M$Informalidad == 1,]$fex_c_2011)
+  
+  ing_M_F <- weighted.mean(bog_M[bog_M$Informalidad == 0,]$INGLABO, bog_M[bog_M$Informalidad == 0,]$fex_c_2011, na.rm =TRUE)
+  ing_M_I <- weighted.mean(bog_M[bog_M$Informalidad == 1,]$INGLABO, bog_M[bog_M$Informalidad == 1,]$fex_c_2011, na.rm =TRUE)
+  
+  
+  
+  ##################### Vector Resultante ####################################
+  
+  names <-  c("Hombres", "Mujeres", "Total", "Hombres", "Mujeres", "Total")
+  Ocupados <- c(Ocu_H_F, Ocu_M_F, Ocu_F,Ocu_H_I, ing_M_I,Ocu_I )
+  Salarios <- c(Ing_H_F, ing_M_F, ing_F,ing_H_I, ing_M_I,ing_I )
+  stats <- data.frame(names,Ocupados, Salarios)
+  
+  stats  
+  
+}
+
+
+write_xlsx(G18(Ene),paste0("output/Ene.xlsx"))
+write_xlsx(G18(Feb),paste0("output/Feb.xlsx"))
+write_xlsx(G18(Mar),paste0("output/Mar.xlsx"))
+write_xlsx(G18(Abr),paste0("output/Abr.xlsx"))
+write_xlsx(G18(May),paste0("output/May.xlsx"))
+write_xlsx(G18(Jun),paste0("output/Jun.xlsx"))
+write_xlsx(G18(Jul),paste0("output/Jul.xlsx"))
+write_xlsx(G18(Ago),paste0("output/Ago.xlsx"))
+write_xlsx(G18(Sep),paste0("output/Sep.xlsx"))
+write_xlsx(G18(Oct),paste0("output/Oct.xlsx"))
+write_xlsx(G18(Nov),paste0("output/Nov.xlsx"))
+write_xlsx(G18(Dic),paste0("output/Dic.xlsx"))
 
 
 
+# G19
+
+
+G19 <- function(A){
+  
+  # Preparación  
+  bog <- A[A$AREA == 11, ]
+  bog <- bog[bog$P6040 > 13,]
+  bog$PEA <- ifelse(bog$OCI == 1 | bog$DSI ==1 ,1,0)  
+  bog$PEA[is.na(bog$PEA)] <- 0
+  bog$PET <- ifelse(bog$P6040 >= 12,1,0)
+  bog$DSI[is.na(bog$DSI)] <- 0
+  bog$fex_c_2011 <- as.numeric(sub(",",".",bog$fex_c_2011))
+  bog$OCI[is.na(bog$OCI)] <- 0
+  bog$P6220[is.na(bog$P6220)] <- 1
+  bog$RAMA2D_R4 <- as.numeric(bog$RAMA2D_R4)
+  
+  ##################### Gráfica 16 ############################################
+  
+  bog$P6870 <- as.numeric(bog$P6870)
+  bog$P6430 <- as.numeric(bog$P6430)
+  
+  
+  bog$Informalidad <- numeric(length = dim(bog)[1])
+  
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 1] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 6] <- 1
+  bog$Informalidad[bog$P6430 == 7] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 3] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 8 ] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 4 & bog$OFICIO > 20] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 5 & bog$P6040 >= 15] <- 1
+  
+  bog$age <- cut(bog$P6040, breaks = c(13,28,39,49, 59, 130))
+  bog_H <- bog[complete.cases(bog$age) & bog$P6020 == 1,]
+  bog_M <- bog[complete.cases(bog$age) & bog$P6020 == 2,]
+  
+
+  
+  list_H_age <- split(bog_H,bog_H$age) 
+  TI_H_age <- sapply(list_H_age, function(x) {
+    Ocu <-  sum(x[x$PET == 1 & x$OCI == 1,]$fex_c_2011)
+    Informales <- sum(x[x$PET == 1 & x$Informalidad == 1,]$fex_c_2011)
+    TI <- Informales/Ocu
+  }) 
+
+  list_M_age <- split(bog_M,bog_M$age) 
+  TI_M_age <- sapply(list_M_age, function(x) {
+    Ocu <-  sum(x[x$PET == 1 & x$OCI == 1,]$fex_c_2011)
+    Informales <- sum(x[x$PET == 1 & x$Informalidad == 1,]$fex_c_2011)
+    TI <- Informales/Ocu
+  }) 
+  
+  
+  
+  
+  ##################### Vector Resultante ####################################
+  
+  names <- c(names(TI_H_age), names(TI_M_age))
+  
+  values <-  c(TI_H_age,TI_M_age)
+  
+  stats <- data.frame(names, values)
+  
+  stats
+  
+}
+
+write_xlsx(G19(Ene),paste0("output/Ene.xlsx"))
+write_xlsx(G19(Feb),paste0("output/Feb.xlsx"))
+write_xlsx(G19(Mar),paste0("output/Mar.xlsx"))
+write_xlsx(G19(Abr),paste0("output/Abr.xlsx"))
+write_xlsx(G19(May),paste0("output/May.xlsx"))
+write_xlsx(G19(Jun),paste0("output/Jun.xlsx"))
+write_xlsx(G19(Jul),paste0("output/Jul.xlsx"))
+write_xlsx(G19(Ago),paste0("output/Ago.xlsx"))
+write_xlsx(G19(Sep),paste0("output/Sep.xlsx"))
+write_xlsx(G19(Oct),paste0("output/Oct.xlsx"))
+write_xlsx(G19(Nov),paste0("output/Nov.xlsx"))
+write_xlsx(G19(Dic),paste0("output/Dic.xlsx"))
 
 
 
-unique(Oct$RAMA2D_R4)
+#20
 
-sort(unique(as.numeric(Ene$RAMA2D_R4)))
-Ene$Sector <- character(length = dim(Ene)[1])
+G20 <- function(A){
+  
+  # Preparación  
+  bog <- A[A$AREA == 11, ]
+  bog <- bog[bog$P6040 > 13,]
+  bog$PEA <- ifelse(bog$OCI == 1 | bog$DSI ==1 ,1,0)  
+  bog$PEA[is.na(bog$PEA)] <- 0
+  bog$PET <- ifelse(bog$P6040 >= 12,1,0)
+  bog$DSI[is.na(bog$DSI)] <- 0
+  bog$fex_c_2011 <- as.numeric(sub(",",".",bog$fex_c_2011))
+  bog$OCI[is.na(bog$OCI)] <- 0
+  bog$P6220[is.na(bog$P6220)] <- 1
+  bog$RAMA2D_R4 <- as.numeric(bog$RAMA2D_R4)
+  
+  ##################### Gráfica 16 ############################################
+  
+  bog$P6870 <- as.numeric(bog$P6870)
+  bog$P6430 <- as.numeric(bog$P6430)
+  
+  
+  bog$Informalidad <- numeric(length = dim(bog)[1])
+  
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 1] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 6] <- 1
+  bog$Informalidad[bog$P6430 == 7] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 3] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 8 ] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 4 & bog$OFICIO > 20] <- 1
+  bog$Informalidad[bog$P6870 <= 3 & bog$P6430 == 5 & bog$P6040 >= 15] <- 1
+  
+  bog_H <- bog[complete.cases(bog$P6220) & bog$P6020 == 1,]
+  bog_M <- bog[complete.cases(bog$P6220) & bog$P6020 == 2,]
+  
+  
+  list_H_educ <- split(bog_H,bog_H$P6220) 
+  TD_H_educ <- sapply(list_H_educ, function(x) {
+    Ocu <-  sum(x[x$PET == 1 & x$OCI == 1,]$fex_c_2011)
+    Informales <- sum(x[x$PET == 1 & x$Informalidad == 1,]$fex_c_2011)
+    TI <- Informales/Ocu
+  }) 
+  
+  list_M_educ <- split(bog_M,bog_M$P6220) 
+  TD_M_educ <- sapply(list_M_educ, function(x) {
+    Ocu <-  sum(x[x$PET == 1 & x$OCI == 1,]$fex_c_2011)
+    Informales <- sum(x[x$PET == 1 & x$Informalidad == 1,]$fex_c_2011)
+    TI <- Informales/Ocu
+  }) 
+  
+  
+  
+  ##################### Vector Resultante ####################################
+  
+  
+  names <-  c(names(TD_H_educ), names(TD_M_educ))
+  values <- c(TD_H_educ, TD_M_educ)
+  
+  stats <- data.frame(names,values)
+  
+  stats
+  
+}
 
-Ene$Sector[Ene$RAMA2D_R4 == 1 | Ene$RAMA2D_R4 == 2] <- "Agricultura"
-Ene$Sector[Ene$RAMA2D_R4 == 5 | Ene$RAMA2D_R4 == 6 | Ene$RAMA2D_R4 == 7 |
-             Ene$RAMA2D_R4 == 8] <- "Explotación de minas"
-Ene$Sector[Ene$RAMA2D_R4 == 10 | Ene$RAMA2D_R4 == 11 | Ene$RAMA2D_R4 == 12 |
-             Ene$RAMA2D_R4 == 13 | Ene$RAMA2D_R4 == 14 |Ene$RAMA2D_R4 == 15 |
-             Ene$RAMA2D_R4 == 16 |Ene$RAMA2D_R4 == 17 | Ene$RAMA2D_R4 == 18 |
-             Ene$RAMA2D_R4 == 19 | Ene$RAMA2D_R4 == 20 | Ene$RAMA2D_R4 == 21 |
-             Ene$RAMA2D_R4 == 22 | Ene$RAMA2D_R4 == 23 | Ene$RAMA2D_R4 == 24 |
-             Ene$RAMA2D_R4 == 25 | Ene$RAMA2D_R4 == 26 | Ene$RAMA2D_R4 == 27 |
-             Ene$RAMA2D_R4 == 28 | Ene$RAMA2D_R4 == 29 | Ene$RAMA2D_R4 == 30 |
-             Ene$RAMA2D_R4 == 31 | Ene$RAMA2D_R4 == 32 | Ene$RAMA2D_R4 == 33] <- "Manufacturas"
-Ene$Sector[Ene$RAMA2D_R4 == 35| Ene$RAMA2D_R4 == 36 | Ene$RAMA2D_R4 == 37 |
-             Ene$RAMA2D_R4 == 38 | Ene$RAMA2D_R4 == 39] <- "Electricidad,  gas y agua"
-Ene$Sector[Ene$RAMA2D_R4 == 41 | Ene$RAMA2D_R4 == 42 | Ene$RAMA2D_R4 == 43 |
-             Ene$RAMA2D_R4 == 68] <- "Construcción e inmobiliarias de minas"
-Ene$Sector[Ene$RAMA2D_R4 == 45 | Ene$RAMA2D_R4 == 46 | Ene$RAMA2D_R4 == 47] <- "Comercio"
-Ene$Sector[Ene$RAMA2D_R4 == 49, Ene$RAMA2D_R4 == 50 | Ene$RAMA2D_R4 == 51 |
-             Ene$RAMA2D_R4 == 52 | Ene$RAMA2D_R4 == 53] <- "Transporte y almacenamiento"
-Ene$Sector[Ene$RAMA2D_R4 == 55 | Ene$RAMA2D_R4 == 56] <- "Alojamiento y comida"
-Ene$Sector[Ene$RAMA2D_R4 == 58, Ene$RAMA2D_R4 == 59 | Ene$RAMA2D_R4 == 60 |
-            Ene$RAMA2D_R4 == 61 | Ene$RAMA2D_R4 == 62 | Ene$RAMA2D_R4 == 63] <- "Información y comunicaciones"
-Ene$Sector[Ene$RAMA2D_R4 == 64 | Ene$RAMA2D_R4 == 65 | Ene$RAMA2D_R4 == 66] <- "Financieras y seguros"
-Ene$Sector[Ene$RAMA2D_R4 == 69 | Ene$RAMA2D_R4 == 70 | Ene$RAMA2D_R4 == 71 |
-             Ene$RAMA2D_R4 == 72 | Ene$RAMA2D_R4 == 73 |Ene$RAMA2D_R4 == 74 |
-             Ene$RAMA2D_R4 == 75 |Ene$RAMA2D_R4 == 77 | Ene$RAMA2D_R4 == 78 |
-             Ene$RAMA2D_R4 == 79 | Ene$RAMA2D_R4 == 80 | Ene$RAMA2D_R4 == 81 |
-             Ene$RAMA2D_R4 == 82 ] <- "Actividades profesionales y de servicios"
-Ene$Sector[Ene$RAMA2D_R4 == 84] <- "Admon pública"
-Ene$Sector[Ene$RAMA2D_R4 == 85] <- "Educación"
-Ene$Sector[Ene$RAMA2D_R4 == 86 | Ene$RAMA2D_R4 == 87 | Ene$RAMA2D_R4 == 88] <- "Salud y asistencia social"
-Ene$Sector[Ene$RAMA2D_R4 == 90 | Ene$RAMA2D_R4 == 91 | Ene$RAMA2D_R4 == 92 |
-             Ene$RAMA2D_R4 == 93] <- "Actividades profesionales y de servicios"
-Ene$Sector[Ene$RAMA2D_R4 == 94 | Ene$RAMA2D_R4 == 95 | Ene$RAMA2D_R4 == 96] <- "Otras actividades y servicios"
-Ene$Sector[Ene$RAMA2D_R4 == 97 | Ene$RAMA2D_R4 == 98] <- "Actividades del hogar"
-           
+write_xlsx(G20(Ene),paste0("output/Ene.xlsx"))
+write_xlsx(G20(Feb),paste0("output/Feb.xlsx"))
+write_xlsx(G20(Mar),paste0("output/Mar.xlsx"))
+write_xlsx(G20(Abr),paste0("output/Abr.xlsx"))
+write_xlsx(G20(May),paste0("output/May.xlsx"))
+write_xlsx(G20(Jun),paste0("output/Jun.xlsx"))
+write_xlsx(G20(Jul),paste0("output/Jul.xlsx"))
+write_xlsx(G20(Ago),paste0("output/Ago.xlsx"))
+write_xlsx(G20(Sep),paste0("output/Sep.xlsx"))
+write_xlsx(G20(Oct),paste0("output/Oct.xlsx"))
+write_xlsx(G20(Nov),paste0("output/Nov.xlsx"))
+write_xlsx(G20(Dic),paste0("output/Dic.xlsx"))
+
 
 
 Ene$Sector[Ene$Sector == ""] <- "otro"
